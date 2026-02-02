@@ -119,6 +119,77 @@ setTimeout(() => heart.remove(), 5000);
 
 function sayYes() {
 document.body.innerHTML = `
+<div class="card" style="animation: fadeIn 1s ease-in;">
+<h1>Quest Time! 🎯</h1>
+<p>Answer these questions to prove you're ready! 😊</p>
+<p id="question" style="font-size: 18px; margin: 20px 0;"></p>
+<div id="options"></div>
+</div>
+`;
+startQuest();
+}
+
+const questions = [
+{
+q: "What's my favorite color?",
+options: ["Red ❤️", "Blue 💙", "Green 💚", "Pink 💖"],
+correct: 0
+},
+{
+q: "What do I love most?",
+options: ["Coffee ☕", "Pizza 🍕", "You 💕", "Sleep 😴"],
+correct: 2
+},
+{
+q: "Perfect date idea?",
+options: ["Movie 🎬", "Dinner 🍽️", "Walk 🚶", "All with you 💑"],
+correct: 3
+}
+];
+
+let currentQ = 0;
+
+function startQuest() {
+showQuestion();
+}
+
+function showQuestion() {
+if (currentQ >= questions.length) {
+showSuccess();
+return;
+}
+const q = questions[currentQ];
+document.getElementById('question').textContent = q.q;
+const optionsDiv = document.getElementById('options');
+optionsDiv.innerHTML = '';
+q.options.forEach((opt, i) => {
+const btn = document.createElement('button');
+btn.textContent = opt;
+btn.style.cssText = 'display:block; width:100%; margin:10px 0; padding:12px; font-size:16px; background:#fff; color:#ff4d6d; border:2px solid #ff4d6d; border-radius:10px; cursor:pointer;';
+btn.onmouseover = () => btn.style.background = '#ff4d6d'; btn.style.color = '#fff';
+btn.onmouseout = () => btn.style.background = '#fff'; btn.style.color = '#ff4d6d';
+btn.onclick = () => checkAnswer(i);
+optionsDiv.appendChild(btn);
+});
+}
+
+function checkAnswer(selected) {
+if (selected === questions[currentQ].correct) {
+currentQ++;
+showQuestion();
+} else {
+document.body.innerHTML = `
+<div class="card" style="animation: fadeIn 1s ease-in;">
+<h1>Oops! 😅</h1>
+<p style="font-size: 20px;">Wrong answer! Let's try again 💪</p>
+<button onclick="location.reload()" style="background:#e74c3c; color:white; padding:12px 24px; border:none; border-radius:30px; font-size:16px; cursor:pointer; margin-top:20px;">Start Over 🔄</button>
+</div>
+`;
+}
+}
+
+function showSuccess() {
+document.body.innerHTML = `
 <div class="success">
 <h1>YAYYYY 💘🎉</h1>
 <p style="font-size: 20px;">You just made me the happiest person alive 🥹❤️</p>
