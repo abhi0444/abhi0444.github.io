@@ -129,52 +129,71 @@ document.body.innerHTML = `
 startQuest();
 }
 
-const questions = [
+const allQuestions = [
 {
-q: "What's my favorite color?",
-options: ["Red ❤️", "Blue 💙", "Green 💚", "Pink 💖"],
+q: "What do I love most?",
+options: ["You 💕", "Me 💕", "Dog 🐶"],
 correct: 0
 },
 {
-q: "What do I love most?",
-options: ["Coffee ☕", "Pizza 🍕", "You 💕", "Sleep 😴"],
+q: "Someone eats your fries without asking. What do you do?",
+options: ["Say nothing but remember forever", "Immediately forgive them", "Order more fries"],
 correct: 2
 },
 {
-q: "Perfect date idea?",
-options: ["Movie 🎬", "Dinner 🍽️", "Walk 🚶", "All with you 💑"],
-correct: 3
+q: "If you have 3 bananas and take away 2, how many bananas do you have?",
+options: ["1", "2", "Emotional damage"],
+correct: 1
+},
+{
+q: "If we're watching a movie and our hands 'accidentally' touch, what happens next?",
+options: ["Immediate apology", "Hand retreat in fear", "Pretend it didn't happen but don't move your hand"],
+correct: 2
+},
+{
+q: "Our knees touch under the table. What's your move?",
+options: ["Move away politely", "Freeze completely", "Don't move. Hold eye contact."],
+correct: 2
+},
+{
+q: "The date is going really well. How does the night end?",
+options: ["Awkward hug", "Text me when you get home", "You never want it to end"],
+correct: 2
 }
 ];
 
+let selectedQuestions = [];
 let currentQ = 0;
 
 function startQuest() {
+// Pick 3 random questions
+selectedQuestions = allQuestions.sort(() => Math.random() - 0.5).slice(0, 3);
+currentQ = 0;
 showQuestion();
 }
 
 function showQuestion() {
-if (currentQ >= questions.length) {
+if (currentQ >= 3) {
 showSuccess();
 return;
 }
-const q = questions[currentQ];
+const q = selectedQuestions[currentQ];
 document.getElementById('question').textContent = q.q;
 const optionsDiv = document.getElementById('options');
 optionsDiv.innerHTML = '';
 q.options.forEach((opt, i) => {
 const btn = document.createElement('button');
 btn.textContent = opt;
-btn.style.cssText = 'display:block; width:100%; margin:10px 0; padding:12px; font-size:16px; background:#fff; color:#ff4d6d; border:2px solid #ff4d6d; border-radius:10px; cursor:pointer;';
-btn.onmouseover = () => btn.style.background = '#ff4d6d'; btn.style.color = '#fff';
-btn.onmouseout = () => btn.style.background = '#fff'; btn.style.color = '#ff4d6d';
+btn.style.cssText = 'display:block; width:100%; margin:10px 0; padding:12px; font-size:16px; background:#fff; color:#ff4d6d; border:2px solid #ff4d6d; border-radius:10px; cursor:pointer; transition: all 0.3s;';
+btn.onmouseover = () => { btn.style.background = '#ff4d6d'; btn.style.color = '#fff'; btn.style.transform = 'scale(1.05)'; };
+btn.onmouseout = () => { btn.style.background = '#fff'; btn.style.color = '#ff4d6d'; btn.style.transform = 'scale(1)'; };
 btn.onclick = () => checkAnswer(i);
 optionsDiv.appendChild(btn);
 });
 }
 
 function checkAnswer(selected) {
-if (selected === questions[currentQ].correct) {
+if (selected === selectedQuestions[currentQ].correct) {
 currentQ++;
 showQuestion();
 } else {
@@ -182,7 +201,7 @@ document.body.innerHTML = `
 <div class="card" style="animation: fadeIn 1s ease-in;">
 <h1>Oops! 😅</h1>
 <p style="font-size: 20px;">Wrong answer! Let's try again 💪</p>
-<button onclick="location.reload()" style="background:#e74c3c; color:white; padding:12px 24px; border:none; border-radius:30px; font-size:16px; cursor:pointer; margin-top:20px;">Start Over 🔄</button>
+<button onclick="location.reload()" style="background:#e74c3c; color:white; padding:12px 24px; border:none; border-radius:30px; font-size:16px; cursor:pointer; margin-top:20px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Start Over 🔄</button>
 </div>
 `;
 }
@@ -191,9 +210,27 @@ document.body.innerHTML = `
 function showSuccess() {
 document.body.innerHTML = `
 <div class="success">
-<h1>YAYYYY 💘🎉</h1>
-<p style="font-size: 20px;">You just made me the happiest person alive 🥹❤️</p>
-<p style="font-size: 60px; animation: pulse 1s infinite;">💖💕💗</p>
+<h1 style="font-size: 42px; margin-bottom: 20px;">💥 QUEST COMPLETE 💥</h1>
+<div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 15px; margin: 20px auto; max-width: 500px;">
+<p style="font-size: 18px; margin: 15px 0;">You've proven you can:</p>
+<p style="font-size: 16px;">✨ Handle the flirting</p>
+<p style="font-size: 16px;">✨ Read the moment</p>
+<p style="font-size: 16px;">✨ Keep up with me</p>
+</div>
+<h2 style="font-size: 32px; margin: 30px 0;">Your reward is officially unlocked:</h2>
+<p style="font-size: 36px; margin: 20px 0; animation: pulse 2s infinite;">😌 A Date With Me 😌</p>
+<div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 15px; margin: 20px auto; max-width: 450px;">
+<p style="font-size: 16px; margin: 10px 0;">⚠️ Side effects may include:</p>
+<p style="font-size: 15px;">💭 Smiling for no reason</p>
+<p style="font-size: 15px;">💭 Thinking about me later</p>
+<p style="font-size: 15px;">💭 Wanting to see me again</p>
+</div>
+<div style="margin-top: 30px; font-size: 18px;">
+<p>📅 Time: TBD</p>
+<p>📍 Place: Somewhere fun</p>
+<p>☕ Bonus points if there's coffee, dessert, or both</p>
+</div>
+<p style="font-size: 60px; margin-top: 30px; animation: pulse 1s infinite;">💖💕💗💋🔥</p>
 </div>
 `;
 }
